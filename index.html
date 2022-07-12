@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doil's DEV-TEST server</title>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        var serverKey;
+        var accessInfo;
+     
+        document.addEventListener("DOMContentLoaded",() => {
+
+            
+            // 쿠키 처리
+            if (window.localStorage) {
+                var t0 = Number(window.localStorage['myUnloadEventFlag']);
+                if (isNaN(t0)) t0=0;
+                var t1 = new Date().getTime();
+
+                var duration = t1-t0;
+                    if (duration < 10 * 1000) {
+                        // asynchronous AJAX call
+                        //askServerToCancelDisconnectionRequest(); 
+                    } else {
+                        // last unload event was for a tab/window close 
+                        // => do whatever you want
+                    }
+            }
+
+
+
+        });
+
+        window.addEventListener("unload", function (e) {
+
+            const id = $("#client-ip").text();
+            /*
+            $.ajax({
+                type: "POST",
+                data:{
+                    id:id
+                },
+                url: "/browser-close.do"
+            });
+            */
+            
+            //let perfomanceStatus = window.performance.getEntriesByType("navigation")[0].type;
+            let performanceStatus = JSON.stringify( window.performance.getEntriesByType("navigation"));
+          
+            let dummy = new FormData(); 
+
+            dummy.append('text','test-msg');
+            dummy.append('document_status',document.readyState);
+            dummy.append('performanceStatus',performanceStatus);
+            dummy.append('id',id);
+
+
+            
+            window.navigator.sendBeacon("/browser-close.do",dummy); 
+
+            /*
+            e.preventDefault();
+            e.returnValue = '';
+            */
+        });
+
+
+
+   
+
+    </script>
+</head>
+<body>
+    <div class="meta-info" style="display:flex;">
+        <span>Public Key : </span>
+        <span id="receivedPubKey"></span>
+    </div>
+    <hr>
+    <div>
+        <div style="display:flex;">
+            <span>Access Ip : </span>
+            <span id="client-ip"></span>
+        </div>
+        <button style="margin-top: 5px;" id="subscribe_Btn">Subscribe</button>
+    </div>
+
+
+
+
+    <script src="js/client.js"></script>    
+
+
+
+</body>
+</html>
