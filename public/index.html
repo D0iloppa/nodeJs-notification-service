@@ -7,13 +7,20 @@
     <title>Doil's DEV-TEST server</title>
     <script type="text/javascript" src="js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
     <script>
+        
+        // var socket=io();
+
         var serverKey;
         var accessInfo;
-     
+        var isReloaded;
+        
+    
         document.addEventListener("DOMContentLoaded",() => {
-
             
+            isReloaded = ( performance.navigation.type == performance.navigation.TYPE_RELOAD );
+            // if(page_stat == 1) page_stat = "reload";
             // 쿠키 처리
             if (window.localStorage) {
                 var t0 = Number(window.localStorage['myUnloadEventFlag']);
@@ -33,10 +40,9 @@
 
 
         });
-
+        
         window.addEventListener("unload", function (e) {
-
-            const id = $("#client-ip").text();
+            
             /*
             $.ajax({
                 type: "POST",
@@ -46,26 +52,35 @@
                 url: "/browser-close.do"
             });
             */
+            /*
+            let perfomanceStatus = window.performance.getEntriesByType("navigation")[0].type;
+            */
+
+
             
-            //let perfomanceStatus = window.performance.getEntriesByType("navigation")[0].type;
             let performanceStatus = JSON.stringify( window.performance.getEntriesByType("navigation"));
-          
+ 
+
             let dummy = new FormData(); 
 
             dummy.append('text','test-msg');
             dummy.append('document_status',document.readyState);
+            dummy.append("reload_chk" , window.closed);
             dummy.append('performanceStatus',performanceStatus);
             dummy.append('id',id);
 
 
             
             window.navigator.sendBeacon("/browser-close.do",dummy); 
+            
 
-            /*
+            
             e.preventDefault();
             e.returnValue = '';
-            */
+            
+        
         });
+        
 
 
 
@@ -84,13 +99,17 @@
             <span>Access Ip : </span>
             <span id="client-ip"></span>
         </div>
+        <div style="display:flex; margin-top: 5px;">
+            <span id="client-cookie"></span>
+        </div>
         <button style="margin-top: 5px;" id="subscribe_Btn">Subscribe</button>
     </div>
 
 
 
 
-    <script src="js/client.js"></script>    
+    <script src="js/sw_mng.js"></script>
+    <script type="text/javascript" src="js/tracer_cookie.js"></script>
 
 
 

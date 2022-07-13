@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Browser Check</title>
+    </head>
+    
+    <body>
+        window opener 체크용 페이지
+        <p id="test"></p>
+
+        <script>
+            var checker = window.opener.closed;
+            alert(checker);
+            document.getElementById("test").innerText = checker;
+
+            if(checker){
+                let dummy = new FormData(); 
+
+                dummy.append('text','test-msg');
+                dummy.append('document_status',document.readyState);
+                dummy.append("reload_chk" , window.closed);
+                dummy.append('performanceStatus',performanceStatus);
+                dummy.append('id',id);
+
+
+
+                window.navigator.sendBeacon("/browser-close.do",dummy); 
+            }
+            window.close();
+        </script>
+    </body>
+</html>

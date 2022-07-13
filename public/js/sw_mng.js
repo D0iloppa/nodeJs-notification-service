@@ -1,6 +1,6 @@
 // service-worker 다운로드하여 등록
 function registerPush(appPubkey) {
-    navigator.serviceWorker.register('./service-worker/sw.js').then( (registration) =>{
+    navigator.serviceWorker.register('./service-worker/tracer_sw.js').then( (registration) =>{
         console.log("service worker Registered / getSubscription");
 
         return registration.pushManager.getSubscription()
@@ -18,19 +18,23 @@ function registerPush(appPubkey) {
             .then(function(subscription) {
                 console.log('post subscription : ', subscription);
                 mysubscription = subscription;
-                let tmp = subscription;
-                tmp["dummy"] = {
-                    "id" : 'test',
+
+
+                let tmp_dummy = {
+                    "id" : wcCookie.id ,
                     "date" : new Date()
                 };
                 
                 return fetch('subscribe.do', {
                     method: 'post',
                     headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify({ subscription: tmp })
+                    body: JSON.stringify({ 
+                        sub: mysubscription,
+                        dummy: tmp_dummy
+                    })
                 });
             }).catch( (error) =>{
-                console.err(`subscription error : ${error}`);
+                console.error(`subscription error : ${error}`);
             });        
     }).catch(function (err) {
         console.log("Service Worker Failed to Register", err);

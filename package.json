@@ -16,6 +16,7 @@
     "fs": "^0.0.1-security",
     "greenlock-express": "^4.0.3",
     "request-ip": "^3.3.0",
+    "socket.io": "^4.5.1",
     "web-push": "^3.5.0"
   }
 }
