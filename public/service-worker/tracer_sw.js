@@ -9,8 +9,11 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
     //const tmp = event;
+    /*
     console.log(`Tracer's Service worker activated! 😎`)
-
+    
+    console.log(clients);
+    */
 });
 
 self.addEventListener('fetch', event => {
@@ -37,11 +40,13 @@ const urlsToCache = [
 
 self.addEventListener('push' , function(event) {
 
+    // push로 보여줄 내용 customizing
+
     const title = "Doil test";
 
     const options = {
-        body : "This notification was generated from a Doil's server순번대기가 완료되었습니다. ",
-        icon : "images/example.png",
+        body : "This notification was generated from a Doil's server 순번대기가 완료되었습니다. ",
+        icon : "/images/example.png",
         vibrate : [100, 50, 100],
         data : {
             dateOfArrival : Date.now(),
@@ -50,13 +55,13 @@ self.addEventListener('push' , function(event) {
         actions:[
             {
                 action : 'explore',
-                title : 'Explore this new world',
-                icon : 'public/images/checkmark.png'
+                title : '방문',
+                icon : '/images/checkmark.png'
             },
             {
                 action : 'close',
-                title : 'Close',
-                icon : 'public/images/xmark.png'
+                title : '닫기',
+                icon : '/images/xmark.png'
             },
         ]
     }
@@ -77,10 +82,32 @@ self.addEventListener('notificationclick', function(event) {
         [event.waitUntil()] ensures that 
         the browser doesn't terminate the service worker before the new window or tab has been displayed.
     */
+    const actionChk = event.action;
+    console.log("action:",actionChk);
     
+
+    /*
     event.waitUntil( () => {
-        eventCallBackFunc() 
+        // eventCallBackFunc() 
+        clients.openWindow('http://www.wellconn.co.kr');
     });
+    */
+
+    const target_url = 'http://www.wellconn.co.kr';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window' })
+        .then(clientsArr => {
+            // If a Window tab matching the targeted URL already exists, focus that;
+            const hadWindowToFocus = clientsArr.some(windowClient => windowClient.url === e.notification.data.url ? (windowClient.focus(), true) : false);
+            // Otherwise, open a new tab to the applicable URL and focus it.
+
+            if (!hadWindowToFocus) 
+                clients.openWindow(target_url)
+                    .then(windowClient => windowClient ? windowClient.focus() : null);
+      }));
+
+
   });
 
 

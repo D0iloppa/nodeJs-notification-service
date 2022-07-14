@@ -1,0 +1,16 @@
+{
+    "name" : "DOIL PWA SAMPLE",
+    "short_name" : "DPS",
+    "discription" : "TEST",
+    "start_url" : ".",
+    "background_color" : "#6dcdb1" ,
+    "theme_color": "#009578",
+    "display":"standalone",
+    "icons:" : [
+        {
+            "src" : "/images/example.png",
+            "sizes" : "192x192",
+            "type" : "image/png"
+        }
+    ]
+}

@@ -61,8 +61,8 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 // serviceWorker가 등록되어 있는지 확인하고 없으면 등록시작
-document.querySelector('#subscribe_Btn').onclick = function(){
-    console.log("btn click");
+//document.querySelector('#subscribe_Btn').onclick = function(){
+function subscribe_btnClick() {
 
     // 구독갱신 unregister
     navigator.serviceWorker.getRegistrations()

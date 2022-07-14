@@ -2,5 +2,9 @@ module.exports ={
     'domain' : 'doiloppa.chickenkiller.com',
     'port' : 80,
     'cert_Path' : 'C:/Certbot/live/doiloppa.chickenkiller.com/',
-    'ssl_Port' : 3939
+    'ssl_Port' : 3939,
+    'VAPID' : {
+        publicKey: 'BBZdw3Gt_vtQsKO35-MSCcJr4xxzdgyb1oUk-TkFck-b_1TOKY8P9NxJmBMb7IJzlHr9Xe6O9t2jKRFUEAwBCg4', 
+        privateKey: 'NM0oDRgZn6aHZjxfUBkYibhnq9Xo3DCd8qVl6nTUogw'
+    }
 }
