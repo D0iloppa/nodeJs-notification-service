@@ -5,8 +5,14 @@ var multipart = require("connect-multiparty");
 var multipartMiddleware = multipart();
 const fs = require("fs");
 const cors = require("cors");
+//const fetch = require("node-fetch");
 var webpush = require("web-push"); // web-push 사용
 
+
+// 스레드
+const { Worker } = require('worker_threads');
+const schedule = require('node-schedule'); // 스케쥴러
+var request = require('request');
 
 
 // 설정파일
@@ -16,10 +22,16 @@ const conf_file = "conf.json";
 
 // 기본 conf파일 템플릿
 const tmpConf = {
-  "domain" : "localhost",
+  // @ Notification server's domain
+  "domain" : "127.0.0.1",
+  // @ Notification server's http port
   "port" : 80,
-  "cert_Path" : "/",
+  // @ Notification server's https port (secure)
   "ssl_Port" : 443,
+  // @ Tracer's domain
+  "tracer_domain" : "127.0.0.1",
+  // @ Notifications server's cert directory
+  "cert_Path" : "/ssl/"
 };
 
 
@@ -80,7 +92,7 @@ if(fs.existsSync(conf_dir + conf_file)){
   
 
 
-/************************** 인증서 ******************************/
+/************************** [인증서] ******************************/
 // ssl 폴더 확인
 const ssl_dir = __dirname + "/ssl/";
 /*
@@ -140,7 +152,7 @@ doilServer.get("/getClientIp.do", (req, res) => {
 });
 
 
-/*******************[구독 관련 annotation]****************************/
+/*******************[구독 관련 라우팅]****************************/
 // 구독자 array (SERVER IN-MEMORY)
 var subs_Arr = [];
 
@@ -152,11 +164,12 @@ doilServer.get("/getServerKey.do", (req, res) => {
   res.json(sendData);
 });
 
-/*
-doilServer.post("/getService-worker.do", (req, res) => {
-  res.sendFile(__dirname + "/public/js/client.js");
+
+doilServer.post("/curl-test.do" , multipartMiddleware, (req,res)=>{
+  let tmpObj = { txt:"test"};
+  res.send(tmpObj);
 });
-*/
+
 
 // 구독자 대상에게 push
 doilServer.post("/target-push.do", multipartMiddleware, (req, res) => {
@@ -223,11 +236,6 @@ doilServer.get("/test-push.do", multipartMiddleware, (req, res) => {
 });
 
 
-
-
-
-
-
 // 구독버튼
 doilServer.post("/subscribe.do", (req, res) => {
 
@@ -254,7 +262,7 @@ doilServer.post("/subscribe.do", (req, res) => {
   res.send("Subscribed");
 });
 
-// 브라우저 unload catch
+// 브라우저 unload catch test
 doilServer.post("/browser-close.do", multipartMiddleware, (req, res) => {
   const getBody = req.body;
   //console.log(req);
@@ -288,7 +296,63 @@ const httpsServer = https
       site : https://${d_Conf.domain}:443/
     ##########################################################
     `);
+
+    // 스케쥴러 설정
+    schedule.scheduleJob('* * * * * *', function(){
+// @ 스케쥴러 작성영역 START
+
+console.log(
+  `==================================================
+${new Date()}  | scheduler running!
+==================================================`
+);
+  // request
+      request.post(
+          { 
+            headers: {
+              'content-type' : 'application/json'
+            },
+            url: 'http://localhost/curl-test.do', 
+            body: {  // data 
+              id:"test"
+            },
+            json: true
+          }, function(err, response, result){
+            if(!err){ // on success
+              console.log(result); 
+            }
+          }
+      ); 
+      
+      console.log(subs_Arr);
+
+      if(subs_Arr[0]){
+        let target = subs_Arr[0];
+        isWaitUser(target?.id);
+
+      }
+
+// @ 스케쥴러 작성 영역 END
+    });
+
   });
+
+
+
+function isWaitUser(id){
+  if(id==null || id ==''){ return false; }
+
+  
+
+}
+
+// let worker = new Worker(__dirname + '/worker.js');
+
+
+
+
+
+
 
 
 /*
