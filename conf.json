@@ -2,7 +2,7 @@
     "protocol": "https",
     "domain":"doiloppa.chickenkiller.com",
     "port":80,
-    "ssl_Port":443,
+    "ssl_Port":3939,
     "tracer_domain":"doiloppa.chickenkiller.com",
     "cert_Path":"/ssl/",
     "VAPID" : {

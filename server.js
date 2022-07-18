@@ -209,8 +209,7 @@ doilServer.post("/target-push.do", multipartMiddleware, (req, res) => {
   }
 
   console.log("push end");
-  
-  
+
 });
 
 
@@ -225,8 +224,6 @@ doilServer.get("/test-push.do", multipartMiddleware, (req, res) => {
         "auth":"Bjna681paxHEXFNWcwbcRg"
       }
     };
-
-
 
     webpush.sendNotification(sub , "test message")
     .then((res) => {
@@ -295,6 +292,7 @@ const httpServer = doilServer.listen(d_Conf["port"], () => {
 const httpsServer = https
   .createServer(credentials, doilServer)
   .listen(d_Conf["ssl_Port"], () => {
+    // 서버 listen 상태 console
     console.log(`
     ##########################################################
       😎 Wellcome to DOIL's dev https SERVER (by express) 😎
@@ -326,7 +324,7 @@ ${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
             json: true
           }, function(err, response, result){
             if(!err){ // on success
-              console.log(result); 
+              console.log(response, result); 
             }
           }
       ); 
