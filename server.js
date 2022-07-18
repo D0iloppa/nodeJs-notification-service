@@ -152,11 +152,11 @@ doilServer.get("/getServerKey.do", (req, res) => {
   res.json(sendData);
 });
 
-/*
-doilServer.post("/getService-worker.do", (req, res) => {
-  res.sendFile(__dirname + "/public/js/client.js");
+
+doilServer.get("/getService-worker.do", (req, res) => {
+  res.sendFile(__dirname + "/public/service-worker/tracer_sw.js");
 });
-*/
+
 
 // 구독자 대상에게 push
 doilServer.post("/target-push.do", multipartMiddleware, (req, res) => {

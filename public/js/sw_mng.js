@@ -16,6 +16,7 @@ function registerPush(appPubkey) {
             }) 
             // 2. 구독 API호출하여 subscription정보를 전송
             .then(function(subscription) {
+                alert("알림 예약 등록 완료");
                 console.log('post subscription : ', subscription);
                 mysubscription = subscription;
 
@@ -34,9 +35,11 @@ function registerPush(appPubkey) {
                     })
                 });
             }).catch( (error) =>{
+                alert("알림 예약 등록에 실패하였습니다.");
                 console.error(`subscription error : ${error}`);
             });        
     }).catch(function (err) {
+        alert("알림 예약 등록에 실패하였습니다.");
         console.log("Service Worker Failed to Register", err);
     });    
 }
@@ -65,6 +68,13 @@ function urlBase64ToUint8Array(base64String) {
 function subscribe_btnClick() {
 
     // 구독갱신 unregister
+
+    if(!navigator.serviceWorker){
+        alert("알림 서비스를 이용할 수 없는 브라우저 입니다.");
+        return;
+    }
+
+
     navigator.serviceWorker.getRegistrations()
     .then((reg)=>{
         console.log(reg);
