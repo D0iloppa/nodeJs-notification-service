@@ -1,1 +1,12 @@
-{"domain":"doiloppa.chickenkiller.com","port":80,"cert_Path":"C:/Certbot/live/doiloppa.chickenkiller.com/","ssl_Port":3939,"VAPID":{"publicKey":"BNDvV_WKHmATiY52mEBMg2kJdC9iGz0tedPt8OcSb3aZF6PmqAmcK_A2PCss5e9IpZU4gFql6SljUmb70AohwLY","privateKey":"EnUveEsrxZg5Rvwe6G3DF90dgp_8jjZa497DEShOvB0"}}
+{
+    "protocol": "https",
+    "domain":"doiloppa.chickenkiller.com",
+    "port":80,
+    "ssl_Port":443,
+    "tracer_domain":"doiloppa.chickenkiller.com",
+    "cert_Path":"/ssl/",
+    "VAPID":{
+        "publicKey":"BGszANEB4GlPvQ9fh4t11oOBW6kz5mwDZruEPwJm7SmZpsw0QJ__qRkADagVemd0YiA8XpjIj69gSPGCE2lALqc",
+        "privateKey":"7FP-fIRFBSF4gn34WH4uRvNxtUOSWCmozBI8r9ehCbg"
+    }
+}
