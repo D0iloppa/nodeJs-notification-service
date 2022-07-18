@@ -5,18 +5,17 @@ console.log(`Service worker is waking up! 🐳`);
 
 self.addEventListener('install', event => {
     console.log(`Tracer's Service worker installed! 👍`);
+    
+    
 });
 
 self.addEventListener('activate', event => {
-    //const tmp = event;
-    /*
-    console.log(`Tracer's Service worker activated! 😎`)
-    
-    console.log(clients);
-    */
-});
+    console.log(`Tracer's Service worker activated! 😎`);
 
+});
+/*
 self.addEventListener('fetch', event => {
+    self.navigator.sendBeacon('/beacon-test.do', "fetch");
     event.respondWith(
         caches.match(event.request)
         .then( response => {
@@ -25,18 +24,24 @@ self.addEventListener('fetch', event => {
     );
 });
 
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(function(response) {
+          // Cache hit - return response
+          if (response) {
+            return response;
+          }
+          return fetch(event.request);
+        }
+      )
+    );
+  });
+*/
 
 self.addEventListener('offline', event =>{
     console.log("OFFLINE");
 });
-
-const CACHE_NAME = "tracer-sw-cache-v1";
-const urlsToCache = [
-    '/',
-    '/styles/main.css',
-    '/scripts/main.js',
-    '/images/sad.jpg'
-];
 
 self.addEventListener('push' , function(event) {
 
@@ -47,7 +52,6 @@ self.addEventListener('push' , function(event) {
     const options = {
         body : "This notification was generated from a Doil's server 순번대기가 완료되었습니다. ",
         icon : "/images/example.png",
-        vibrate : [100, 50, 100],
         data : {
             dateOfArrival : Date.now(),
             primaryKey : '2'
@@ -65,10 +69,24 @@ self.addEventListener('push' , function(event) {
             },
         ]
     }
-
+/*
     event.waitUntil(
         self.registration.showNotification(title, options)
     );
+*/
+
+    // const data = JSON.parse(event.data.text());
+    const data = {test:"testmsg"};
+
+    event.waitUntil( async function() {
+        for (const client of await self.clients.matchAll({includeUncontrolled: true})) {
+            client.postMessage(data);
+        }
+
+        self.registration.showNotification( title, options )
+    }());
+
+
     
 });
 
@@ -86,12 +104,6 @@ self.addEventListener('notificationclick', function(event) {
     console.log("action:",actionChk);
     
 
-    /*
-    event.waitUntil( () => {
-        // eventCallBackFunc() 
-        clients.openWindow('http://www.wellconn.co.kr');
-    });
-    */
 
     const target_url = 'http://www.wellconn.co.kr';
 
@@ -116,22 +128,3 @@ self.addEventListener('notificationclick', function(event) {
     clients.openWindow('http://www.wellconn.co.kr');
   }
 
-
-  self.addEventListener('close',(e)=>{
-    
-
-
-
-    let dummy = new FormData(); 
-
-    dummy.append('text','서비스워커 체크');
-    dummy.append('document_status',document.readyState);
-    dummy.append("reload_chk" , window.closed);
-    dummy.append('performanceStatus',performanceStatus);
-    dummy.append('id',id);
-
-
-    
-    window.navigator.sendBeacon("/browser-close.do",dummy); 
-
-  });

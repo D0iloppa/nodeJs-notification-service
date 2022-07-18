@@ -146,8 +146,12 @@ doilServer.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-doilServer.get("/test", (req, res) => {
-  res.sendFile(__dirname + "/public/test.html");
+doilServer.get("/subscribeBtn", (req, res) => {
+  res.sendFile(__dirname + "/public/subscribeBtn.html");
+});
+
+doilServer.post("/beacon-test.do", (req, res) => {
+  console.log(req);
 });
 
 // health check
@@ -289,12 +293,14 @@ doilServer.post("/subscribe.do", (req, res) => {
 // 브라우저 unload catch test
 doilServer.post("/browser-close.do", multipartMiddleware, (req, res) => {
   const getBody = req.body;
+  const test = getBody;
   //console.log(req);
   /*
   console.log("client info : ", getBody);
   console.log("performanceStaus : " + getBody.performanceStatus);
   */
-  console.log(`${getBody.id} : 브라우저 닫힘`);
+  // console.log(`클라이언트 브라우저 상태 : ${getBody}`);
+  console.log(`${test} : 브라우저 닫힘`);
   res.sendStatus(201);
 });
 
