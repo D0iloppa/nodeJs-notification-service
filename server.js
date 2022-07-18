@@ -260,6 +260,23 @@ doilServer.post("/subscribe.do", (req, res) => {
     subs_Arr.push(subInfo);
   }
   
+  // request
+  request.post(
+    { 
+      headers: {
+        'content-type' : 'application/json'
+      },
+      url: `http://192.168.0.7/post-test.do`,
+      body: {  // data 
+        sub : subInfo
+      },
+      json: true
+    }, function(err, response, result){
+      if(!err){ // on success
+        console.log(result.txt); 
+      }
+    }
+  ); 
 
   console.log(`subscribed : ${JSON.stringify(req.body)}`);
   res.send("Subscribed");
@@ -302,7 +319,7 @@ const httpsServer = https
     `);
 
     // 스케쥴러 설정
-    schedule.scheduleJob('* * * * * *', function(){
+    schedule.scheduleJob('0 0 0 0 0 0', function(){
 // @ 스케쥴러 작성영역 START
 
 console.log(
@@ -311,6 +328,7 @@ ${new Date()}  | scheduler running!
 ${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
 ==================================================`
 );
+<<<<<<< HEAD
   // request
       request.post(
           { 
@@ -336,22 +354,51 @@ ${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
         isWaitUser(target?.id);
 
       }
+=======
+>>>>>>> 96e00d0c903c7ae102da675b5e90fe73006bd162
 
+  notification_scheduler();
 // @ 스케쥴러 작성 영역 END
     });
 
   });
 
+function notification_scheduler(){
+  /*
+    // request
+    request.post(
+      { 
+        headers: {
+          'content-type' : 'application/json'
+        },
+        url: `${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do`,
+        body: {  // data 
+          id:"test"
+        },
+        json: true
+      }, function(err, response, result){
+        if(!err){ // on success
+          console.log(result.txt); 
+        }
+      }
+  ); 
+  
+  console.log(subs_Arr);
+
+  if(subs_Arr[0]){
+    let target = subs_Arr[0];
+    isWaitUser(target?.id);
+
+  }
+
+  */
+}
+
 
 
 function isWaitUser(id){
   if(id==null || id ==''){ return false; }
-
-  
-
 }
-
-// let worker = new Worker(__dirname + '/worker.js');
 
 
 
