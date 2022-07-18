@@ -22,6 +22,8 @@ const conf_file = "conf.json";
 
 // 기본 conf파일 템플릿
 const tmpConf = {
+  // @ Notification server's Protocol
+  "protocol" : "https",
   // @ Notification server's domain
   "domain" : "127.0.0.1",
   // @ Notification server's http port
@@ -304,6 +306,7 @@ const httpsServer = https
 console.log(
   `==================================================
 ${new Date()}  | scheduler running!
+${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
 ==================================================`
 );
   // request
@@ -312,7 +315,7 @@ ${new Date()}  | scheduler running!
             headers: {
               'content-type' : 'application/json'
             },
-            url: 'http://localhost/curl-test.do', 
+            url: `${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do`,
             body: {  // data 
               id:"test"
             },

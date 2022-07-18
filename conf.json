@@ -1,4 +1,5 @@
 {
+    "protocol": "https",
     "domain":"doiloppa.chickenkiller.com",
     "port":80,
     "ssl_Port":443,
