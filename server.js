@@ -167,6 +167,10 @@ doilServer.get("/getServerKey.do", (req, res) => {
 });
 
 
+doilServer.get("/getService-worker.do", (req, res) => {
+  res.sendFile(__dirname + "/public/service-worker/tracer_sw.js");
+});
+
 doilServer.post("/curl-test.do" , multipartMiddleware, (req,res)=>{
   let tmpObj = { txt:"test"};
   res.send(tmpObj);
