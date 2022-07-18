@@ -328,7 +328,6 @@ ${new Date()}  | scheduler running!
 ${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
 ==================================================`
 );
-<<<<<<< HEAD
   // request
       request.post(
           { 
@@ -354,9 +353,6 @@ ${d_Conf["protocol"]}://${d_Conf["domain"]}/curl-test.do
         isWaitUser(target?.id);
 
       }
-=======
->>>>>>> 96e00d0c903c7ae102da675b5e90fe73006bd162
-
   notification_scheduler();
 // @ 스케쥴러 작성 영역 END
     });
