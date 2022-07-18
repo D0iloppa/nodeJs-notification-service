@@ -93,3 +93,51 @@ function subscribe_btnClick() {
 
     });
 }
+
+
+
+// 외부 서비스워커 등록 테스트
+function outerSWTest(appPubkey) {
+    navigator.serviceWorker.register('https://doiloppa.chickenkiller.com/getService-worker.do').then( (registration) =>{
+        console.log("service worker Registered / getSubscription");
+
+        return registration.pushManager.getSubscription()
+            .then(function(subscription) {
+                if (subscription) {
+                    return subscription;
+                }
+
+                return registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(appPubkey)
+                });
+            }) 
+            // 2. 구독 API호출하여 subscription정보를 전송
+            .then(function(subscription) {
+                alert("알림 예약 등록 완료");
+                console.log('post subscription : ', subscription);
+                mysubscription = subscription;
+
+
+                let tmp_dummy = {
+                    "id" : wcCookie.id ,
+                    "date" : new Date()
+                };
+                
+                return fetch('subscribe.do', {
+                    method: 'post',
+                    headers: { 'Content-type': 'application/json' },
+                    body: JSON.stringify({ 
+                        sub: mysubscription,
+                        dummy: tmp_dummy
+                    })
+                });
+            }).catch( (error) =>{
+                alert("알림 예약 등록에 실패하였습니다.");
+                console.error(`subscription error : ${error}`);
+            });        
+    }).catch(function (err) {
+        alert("알림 예약 등록에 실패하였습니다.");
+        console.log("Service Worker Failed to Register", err);
+    });    
+}

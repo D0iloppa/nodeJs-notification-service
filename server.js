@@ -146,6 +146,10 @@ doilServer.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
+doilServer.get("/test", (req, res) => {
+  res.sendFile(__dirname + "/public/test.html");
+});
+
 // health check
 doilServer.get("/isAlive", (req, res) => res.sendStatus(200));
 doilServer.get("/getClientIp.do", (req, res) => {
