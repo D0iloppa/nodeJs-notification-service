@@ -1,4 +1,4 @@
-const  sw_label = 'TRACER 3.0 service-worker';
+const sw_label = 'TRACER 3.0 service-worker #1';
 
 
 console.log(`Service worker is waking up! 🐳`);
@@ -48,10 +48,10 @@ self.addEventListener('push' , function(event) {
 
     // push로 보여줄 내용 customizing
 
-    const title = "Doil test";
+    const title = "Wellconn";
 
     const options = {
-        body : "This notification was generated from a Doil's server 순번대기가 완료되었습니다. ",
+        body : "순번대기가 완료되었습니다. ",
         icon : "/images/example.png",
         data : {
             dateOfArrival : Date.now(),
