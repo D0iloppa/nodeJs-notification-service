@@ -141,9 +141,13 @@
                 }
             }
         </style>
+</head>
+<body>
+    <script src="js/sw_mng.js"></script>
+    <script type="text/javascript" src="js/tracer_cookie.js"></script>
     <script>
         
-        // var socket=io();
+        // var socket = io();
 
         var serverKey;
         var accessInfo;
@@ -152,52 +156,33 @@
     
         document.addEventListener("DOMContentLoaded",() => {
             
-            isReloaded = ( performance.navigation.type == performance.navigation.TYPE_RELOAD );
-            // if(page_stat == 1) page_stat = "reload";
-            // 쿠키 처리
-            if (window.localStorage) {
-                var t0 = Number(window.localStorage['myUnloadEventFlag']);
-                if (isNaN(t0)) t0=0;
-                var t1 = new Date().getTime();
-
-                var duration = t1-t0;
-                    if (duration < 10 * 1000) {
-                        // asynchronous AJAX call
-                        //askServerToCancelDisconnectionRequest(); 
-                    } else {
-                        // last unload event was for a tab/window close 
-                        // => do whatever you want
-                    }
-            }
-
-
+            
 
         });
-        
+
         window.addEventListener("unload", function (e) {
             
-            /*
             $.ajax({
                 type: "POST",
                 data:{
-                    id:id
+                    id : "test"
                 },
                 url: "/browser-close.do"
             });
-            */
+
             /*
             let perfomanceStatus = window.performance.getEntriesByType("navigation")[0].type;
             */
 
 
-            
+            /*
             let performanceStatus = JSON.stringify( window.performance.getEntriesByType("navigation"));
- 
+
 
             let dummy = new FormData(); 
 
             dummy.append('text','test-msg');
-            dummy.append('document_status',document.readyState);
+            dummy.append('document_status',document.visibilityState);
             dummy.append("reload_chk" , window.closed);
             dummy.append('performanceStatus',performanceStatus);
             dummy.append('id',id);
@@ -205,14 +190,17 @@
 
             
             window.navigator.sendBeacon("/browser-close.do",dummy); 
-            
+            */
 
-            
+            /*
             e.preventDefault();
             e.returnValue = '';
-            
+            */
         
         });
+
+        
+       
         
 
 
@@ -220,10 +208,6 @@
    
 
     </script>
-</head>
-<body>
-    <script src="js/sw_mng.js"></script>
-    <script type="text/javascript" src="js/tracer_cookie.js"></script>
 
     <div id="waitPage" 
         style="position: fixed;
@@ -273,7 +257,7 @@
                         </div>
                     </div>
                     <div style="text-align: center;">
-                        <iframe src="https://doiloppa.chickenkiller.com"></iframe>
+                        <!-- <iframe src="https://doiloppa.chickenkiller.com"></iframe> -->
                         <button style="margin-top: 5px;" id="subscribe_Btn" onclick="subscribe_btnClick()">알림 예약</button>
                     </div>
                     
