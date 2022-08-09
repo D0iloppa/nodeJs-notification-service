@@ -10,6 +10,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
+    clients.matchAll({ type: 'window' }).then( (data)=> console.log(data));
     console.log(`Tracer's Service worker activated! 😎`);
 
 });
@@ -75,16 +76,20 @@ self.addEventListener('push' , function(event) {
     );
 */
 
+
+
     // const data = JSON.parse(event.data.text());
     const data = {test:"testmsg"};
-
+    
     event.waitUntil( async function() {
+        
         for (const client of await self.clients.matchAll({includeUncontrolled: true})) {
             client.postMessage(data);
         }
-
         self.registration.showNotification( title, options )
-    }());
+    }()
+    );
+    
 
 
     
@@ -102,25 +107,32 @@ self.addEventListener('notificationclick', function(event) {
     */
     const actionChk = event.action;
     console.log("action:",actionChk);
-    
 
+    // 클릭한 버튼별로 분기
+    switch(actionChk){
+        case "explore":
+            const target_url = 'http://www.wellconn.co.kr';
 
-    const target_url = 'http://www.wellconn.co.kr';
+            event.waitUntil(
+                clients.matchAll({ type: 'window' })
+                .then(clientsArr => {
+                    // 이미 대상 url이 탭에 있는 경우, 해당 탭으로 focus
+                    const hadWindowToFocus = clientsArr.some(windowClient => windowClient.url === e.notification.data.url ? (windowClient.focus(), true) : false);
+                    // Otherwise, open a new tab to the applicable URL and focus it.
+        
+                    if (!hadWindowToFocus) 
+                        clients.openWindow(target_url)
+                            .then(windowClient => windowClient ? windowClient.focus() : null);
+              }));
 
-    event.waitUntil(
-        clients.matchAll({ type: 'window' })
-        .then(clientsArr => {
-            // If a Window tab matching the targeted URL already exists, focus that;
-            const hadWindowToFocus = clientsArr.some(windowClient => windowClient.url === e.notification.data.url ? (windowClient.focus(), true) : false);
-            // Otherwise, open a new tab to the applicable URL and focus it.
+            break;    
 
-            if (!hadWindowToFocus) 
-                clients.openWindow(target_url)
-                    .then(windowClient => windowClient ? windowClient.focus() : null);
-      }));
-
+        default:
+            break;
+    }
 
   });
+
 
 
   function eventCallBackFunc(){

@@ -75,9 +75,13 @@ function testPush(target_id){
         },
         success : function(data){
             console.log(data);
+            
+            return data;
         },
         error :function(error) {
             console.log("Error!");
+
+            return error;
         }
 });
 }

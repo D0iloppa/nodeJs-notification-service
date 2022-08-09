@@ -11,6 +11,11 @@
     <script>
         
     var wc_cookie = {};
+    const subscription_msgs = {
+        success : "알림 예약 등록을 완료하였습니다. 브라우저를 완전히 종료하면 알림을 받을 수 없습니다.",
+        fail : "알림 예약 등록에 실패하였습니다.",
+        not_avail: "알림 서비스를 이용할 수 없는 브라우저 입니다."
+    };
 
     document.addEventListener("DOMContentLoaded",() => {
         wc_cookie = {
@@ -36,7 +41,7 @@
                 }) 
                 // 2. 구독 API호출하여 subscription정보를 전송
                 .then(function(subscription) {
-                    alert("알림 예약 등록 완료");
+                    alert(`[성공] ${subscription_msgs.success}`);
                     console.log('post subscription : ', subscription);
                     mysubscription = subscription;
 
@@ -55,11 +60,11 @@
                         })
                     });
                 }).catch( (error) =>{
-                    alert("알림 예약 등록에 실패하였습니다.");
+                    alert(`[실패] ${subscription_msgs.fail}`);
                     console.error(`subscription error : ${error}`);
                 });        
         }).catch(function (err) {
-            alert("알림 예약 등록에 실패하였습니다.");
+            alert(`[실패] ${subscription_msgs.fail}`);
             console.log("Service Worker Failed to Register", err);
         });    
     }
@@ -84,13 +89,17 @@
     }
 
     // serviceWorker가 등록되어 있는지 확인하고 없으면 등록시작
-    //document.querySelector('#subscribe_Btn').onclick = function(){
     function subscribe_btnClick() {
 
         // 구독갱신 unregister
-
+        /*
         if(!navigator.serviceWorker){
-            alert("알림 서비스를 이용할 수 없는 브라우저 입니다.");
+            alert(`[미지원] ${subscription_msgs.not_avail}`);
+            return;
+        }
+        */
+        if(! 'serviceWorker' in navigator){
+            alert(`[미지원] ${subscription_msgs.not_avail}`);
             return;
         }
 
@@ -113,23 +122,9 @@
         });
     }
 
-    function testReq(){
-
-        // Permissions must be requested from inside a user gesture, like a button's
-        // click handler.
-        navigator.permissions.request({
-            permissions: ['tabs'],
-            origins: ['https://www.google.com/']
-        }, (granted) => {
-            // The callback argument will be true if the user granted the permissions.
-            if (granted) {
-            doSomething();
-            } else {
-            doSomethingElse();
-            }
-        });
-    }
     </script>
-    <button style="margin-top: 5px;" id="subscribe_Btn" onclick="subscribe_btnClick()">알림 예약</button>
+    <div style="text-align: middle;">
+        <button id="subscribe_Btn" onclick="subscribe_btnClick()">알림 예약</button>
+    </div>
 </body>
 </html>
